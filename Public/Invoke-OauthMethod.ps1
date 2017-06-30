@@ -11,7 +11,6 @@ function Invoke-OAuthMethod {
         [ValidateSet(
             'DELETE',
             'GET',
-            'PATCH',
             'POST',
             'PUT'
         )]
