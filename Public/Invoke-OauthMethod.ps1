@@ -9,7 +9,9 @@ function Invoke-OAuthMethod {
         [Parameter(Mandatory=$true)]
         [string]$Uri,
         [ValidateSet(
+            'DELETE',
             'GET',
+            'PATCH',
             'POST',
             'PUT'
         )]
