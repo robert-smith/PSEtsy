@@ -1,3 +1,67 @@
+<#
+.SYNOPSIS
+Sends a request to specified URI using OAuth. Only works with OAuth 1.0.
+
+.DESCRIPTION
+This function will send an OAuth 1.0 request to the given API. Additional parameters can be specified
+when necessary. The output will be the raw response received through the Invoke-RestMethod cmdlet.
+
+.PARAMETER ConsumerKey
+The consumer key.
+
+.PARAMETER ConsumerSecret
+The consumer secret.
+
+.PARAMETER Token
+The token received through the OAuth token request process.
+
+.PARAMETER TokenSecret
+The token secret received through the OAuth token request process.
+
+.PARAMETER Uri
+The API URI.
+
+.PARAMETER Method
+The HTTP method to be used. Accepted values: DELETE, GET, POST, PUT
+
+.PARAMETER Parameters
+The name(s) of the REST method's parameter(s) and the value(s).
+
+.EXAMPLE
+$splat =
+@{
+    Uri = 'https://openapi.etsy.com/v2/oauth/scopes'
+    Method = PUT
+    ConsumerKey = 'NotARealConsumerKey'
+    ConsumerSecret = 'NotReal'
+    Token = 'TotallyLegitOAuthToken'
+    TokenSecret = 'DefinitelyUseThis'
+}
+
+PS C:\> Invoke-OAuthMethod @splat
+
+This will return what scopes the application has access to. This can be used to verifiy that your OAuth tokens are working.
+
+.EXAMPLE
+$splat =
+@{
+    Uri = 'https://openapi.etsy.com/v2/listings/0123456789'
+    Method = PUT
+    ConsumerKey = 'NotARealConsumerKey'
+    ConsumerSecret = 'NotReal'
+    Token = 'TotallyLegitOAuthToken'
+    TokenSecret = 'DefinitelyUseThis'
+    Parameter = @{
+        title = 'Attractive Title'
+        description = 'Pretty important to have one of these'
+    }
+}
+
+PS C:\> Invoke-OAuthMethod @splat
+
+This calls the updateListing method from the Etsy API and updates both the Title and Description at once.
+
+#>
 function Invoke-OAuthMethod {
     param (
         [Parameter(Mandatory=$true)]
