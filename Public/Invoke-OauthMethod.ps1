@@ -14,20 +14,37 @@ function Invoke-OAuthMethod {
             'POST',
             'PUT'
         )]
-        [string]$Method = 'GET'
+        [string]$Method = 'GET',
+        [hashtable]$Parameters
     )
 
     $Nonce = New-Nonce
     $Timestamp = New-OauthTimestamp
+    $splat = @{
+        Uri = $Uri
+        Method = $Method
+    }
 
     $signature = "$Method&"
     $signature += [Uri]::EscapeDataString($Uri) + "&"
-    $signature += [Uri]::EscapeDataString("oauth_consumer_key=" + $ConsumerKey + "&")
-    $signature += [Uri]::EscapeDataString("oauth_nonce=" + $Nonce + "&")
-    $signature += [Uri]::EscapeDataString("oauth_signature_method=HMAC-SHA1&")
-    $signature += [Uri]::EscapeDataString("oauth_timestamp=" + $Timestamp + "&")
-    $signature += [Uri]::EscapeDataString("oauth_token=" + $Token + "&")
-    $signature += [Uri]::EscapeDataString("oauth_version=1.0")
+    $signature += [Uri]::EscapeDataString('oauth_consumer_key=' + $ConsumerKey + '&')
+    $signature += [Uri]::EscapeDataString('oauth_nonce=' + $Nonce + '&')
+    $signature += [Uri]::EscapeDataString('oauth_signature_method=HMAC-SHA1&')
+    $signature += [Uri]::EscapeDataString('oauth_timestamp=' + $Timestamp + '&')
+    $signature += [Uri]::EscapeDataString('oauth_token=' + $Token + '&')
+    $signature += [Uri]::EscapeDataString('oauth_version=1.0')
+
+    if ($Parameters) {
+        $body = New-Object -TypeName System.Collections.ArrayList
+        foreach ($key in $Parameters.Keys) {
+            #I could only get additional parameters to work when the value was run through EscapeDataString twice
+            $value = [Uri]::EscapeDataString($Parameters.$key)
+            $signature += [Uri]::EscapeDataString('&' + $key + '=' + $value)
+            $body.Add($key + '=' + $value)
+        }
+
+        $splat.Body = [Text.Encoding]::ASCII.GetBytes($body -join '&')
+    }
 
     $signature_key = [Uri]::EscapeDataString($ConsumerSecret) + "&" + [Uri]::EscapeDataString($TokenSecret)
 
@@ -44,5 +61,7 @@ function Invoke-OAuthMethod {
     $oauth_authorization += 'oauth_token="' + [Uri]::EscapeDataString($Token) + '",'
     $oauth_authorization += 'oauth_version="1.0"'
 
-    Invoke-RestMethod -Uri $Uri -Headers @{"Authorization" = $oauth_authorization} -Method $Method
+    $splat.Headers = @{"Authorization" = $oauth_authorization}
+
+    Invoke-RestMethod @splat
 }#end of function
