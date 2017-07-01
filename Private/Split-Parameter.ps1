@@ -7,7 +7,7 @@ function Split-Parameter {
     foreach ($param in $Parameter.Split('&')) {
         $pieces = $param.Split('=')
         [PSCustomObject]@{
-            Parameter=$pieces[0]
+            Name=$pieces[0]
             Value=$pieces[1]
         }
     }
