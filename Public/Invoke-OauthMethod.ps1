@@ -79,7 +79,8 @@ function Invoke-OAuthMethod {
             'PUT'
         )]
         [string]$Method = 'GET',
-        [hashtable]$Parameters
+        [hashtable]$Parameters,
+        [string]$Verifier
     )
 
     $Nonce = New-Nonce
@@ -96,6 +97,9 @@ function Invoke-OAuthMethod {
     $signature += [Uri]::EscapeDataString('oauth_signature_method=HMAC-SHA1&')
     $signature += [Uri]::EscapeDataString('oauth_timestamp=' + $Timestamp + '&')
     $signature += [Uri]::EscapeDataString('oauth_token=' + $Token + '&')
+    if ($Verifier) {
+        $signature += [Uri]::EscapeDataString('oauth_verifier=' + $Verifier + '&')
+    }
     $signature += [Uri]::EscapeDataString('oauth_version=1.0')
 
     if ($Parameters) {
@@ -123,6 +127,9 @@ function Invoke-OAuthMethod {
     $oauth_authorization += 'oauth_signature_method="HMAC-SHA1",'
     $oauth_authorization += 'oauth_timestamp="' + [Uri]::EscapeDataString($Timestamp) + '",'
     $oauth_authorization += 'oauth_token="' + [Uri]::EscapeDataString($Token) + '",'
+    if ($Verifier) {
+        $oauth_authorization += 'oauth_verifier="' + [Uri]::EscapeDataString($Verifier) + '",'
+    }
     $oauth_authorization += 'oauth_version="1.0"'
 
     $splat.Headers = @{"Authorization" = $oauth_authorization}
