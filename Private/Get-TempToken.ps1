@@ -10,7 +10,7 @@ function Get-TempToken {
             @{
                 "$($item[0])" = "$($item[1])"
             }
-        ) | Out-Null
+        ) > $null
     }
     
     $oauthToken = $array.Where({$_.Keys -eq 'oauth_token'}) | Select-Object -Unique

@@ -11,7 +11,7 @@ function Get-Element {
     $template = '$_.{0} -eq "{1}"'
     foreach ($key in $Attributes.Keys) {
         $condition = $template -f $key, $Attributes.$key
-        $array.Add($condition) | Out-Null
+        $array.Add($condition) > $null
     }
     $scriptBlock = [scriptblock]::Create($array -join ' -and ')
     #return
