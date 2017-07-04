@@ -47,7 +47,7 @@ function Wait-ForElement {
         $results = Get-Element -IEObject $IEObject -TagName $TagName -Attributes $Attributes
         Start-Sleep -Milliseconds 500
     }
-    while ($null -eq $results)
+    while ($null -eq $results -and $IEObject.HWND)
     #return
     $results
 }
