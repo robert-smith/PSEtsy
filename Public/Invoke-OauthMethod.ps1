@@ -7,35 +7,35 @@ This function will send an OAuth 1.0 request to the given API. Additional parame
 when necessary. The output will be the raw response received through the Invoke-RestMethod cmdlet.
 
 .PARAMETER ConsumerKey
-The consumer key.
+A PSCredential object containing the consumer key as the password. The username can be anything.
 
 .PARAMETER ConsumerSecret
-The consumer secret.
+A PSCredential object containing the consumer secret as the password. The username can be anything.
 
 .PARAMETER Token
-The token received through the OAuth token request process.
+A PSCredential object containing the OAuth token as the password. This is received through the OAuth token request process. The username can be anything.
 
 .PARAMETER TokenSecret
-The token secret received through the OAuth token request process.
+A PSCredential object containing the OAuth token secret as the password. This is received through the OAuth token request process. The username can be anything.
 
 .PARAMETER Uri
-The API URI.
+The base API URI.
 
 .PARAMETER Method
 The HTTP method to be used. Accepted values: DELETE, GET, POST, PUT
 
 .PARAMETER Parameters
-The name(s) of the REST method's parameter(s) and the value(s).
+A hashtabled containing the name(s) of the REST method's parameter(s) and value(s).
 
 .EXAMPLE
 $splat =
 @{
     Uri = 'https://openapi.etsy.com/v2/oauth/scopes'
     Method = PUT
-    ConsumerKey = 'NotARealConsumerKey'
-    ConsumerSecret = 'NotReal'
-    Token = 'TotallyLegitOAuthToken'
-    TokenSecret = 'DefinitelyUseThis'
+    ConsumerKey = $ConsumerKeyCredential
+    ConsumerSecret = $ConsumerKeyCredential
+    Token = $TokenCredential
+    TokenSecret = $TokenSecretCredential
 }
 
 PS C:\> Invoke-OAuthMethod @splat
@@ -47,10 +47,10 @@ $splat =
 @{
     Uri = 'https://openapi.etsy.com/v2/listings/0123456789'
     Method = PUT
-    ConsumerKey = 'NotARealConsumerKey'
-    ConsumerSecret = 'NotReal'
-    Token = 'TotallyLegitOAuthToken'
-    TokenSecret = 'DefinitelyUseThis'
+    ConsumerKey = $ConsumerKeyCredential
+    ConsumerSecret = $ConsumerKeyCredential
+    Token = $TokenCredential
+    TokenSecret = $TokenSecretCredential
     Parameter = @{
         title = 'Attractive Title'
         description = 'Pretty important to have one of these'
@@ -60,6 +60,21 @@ $splat =
 PS C:\> Invoke-OAuthMethod @splat
 
 This calls the updateListing method from the Etsy API and updates both the Title and Description at once.
+
+.EXAMPLE
+$splat =
+@{
+    Uri = 'https://openapi.etsy.com/v2/listings/0123456789'
+    Method = DELETE
+    ConsumerKey = $ConsumerKeyCredential
+    ConsumerSecret = $ConsumerKeyCredential
+    Token = $TokenCredential
+    TokenSecret = $TokenSecretCredential
+}
+
+PS C:\> Invoke-OAuthMethod @splat
+
+Deletes Etsy listing 0123456789.
 
 #>
 function Invoke-OAuthMethod {
