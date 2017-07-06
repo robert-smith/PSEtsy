@@ -83,6 +83,8 @@ function Invoke-OAuthMethod {
         [string]$Verifier
     )
 
+    # Clone hashtable to prevent the original from being modified
+    $Parameters = $Parameters.Clone()
     $Nonce = New-Nonce
     $Timestamp = New-OauthTimestamp
     $splat = @{
@@ -116,6 +118,10 @@ function Invoke-OAuthMethod {
     $Parameters.oauth_version = '1.0'
     $params = ConvertTo-OAuthParameter -Parameters $Parameters
     $signature += $params.Signature
+
+    # Clean up
+    $Parameters.Clear()
+    [gc]::Collect()
 
     $signature_key = [Uri]::EscapeDataString($ConsumerSecret.GetNetworkCredential().Password) + "&" + [Uri]::EscapeDataString($TokenSecret.GetNetworkCredential().Password)
 
