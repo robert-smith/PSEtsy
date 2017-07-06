@@ -13,11 +13,15 @@ function Get-TempToken {
         ) > $null
     }
     
-    $oauthToken = $array.Where({$_.Keys -eq 'oauth_token'}) | Select-Object -Unique
-    $oauthTokenSecret = $array.Where({$_.Keys -eq 'oauth_token_secret'}) | Select-Object -Unique
+    $oauthToken = $array.Where({$_.Keys -eq 'oauth_token'}) |
+        Select-Object -ExpandProperty Values -Unique |
+        ConvertTo-SecureString -AsPlainText -Force
+    $oauthTokenSecret = $array.Where({$_.Keys -eq 'oauth_token_secret'}) |
+        Select-Object -ExpandProperty Values -Unique |
+        ConvertTo-SecureString -AsPlainText -Force
     #return
     [PSCustomObject]@{
-        oauth_token = $oauthToken.Values
-        oauth_token_secret = $oauthTokenSecret.Values
+        oauth_token = New-Object -TypeName PSCredential -ArgumentList 'oauth_token', $oauthToken
+        oauth_token_secret = New-Object -TypeName PSCredential -ArgumentList 'oauth_token', $oauthTokenSecret
     }
 }
