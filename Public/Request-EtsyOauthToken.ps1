@@ -1,18 +1,16 @@
 function Request-EtsyOauthToken {
     param (
         [Parameter(Mandatory=$true)]
-        [securestring]$ConsumerKey,
+        [PSCredential]$ConsumerKey,
         [Parameter(Mandatory=$true)]
-        [securestring]$ConsumerSecret,
+        [PSCredential]$ConsumerSecret,
         [switch]$DoNotStore
     )
-    $consumerKeyCred = New-Object -TypeName PSCredential -ArgumentList 'consumer_key',$ConsumerKey
-    $consumerSecretCred = New-Object -TypeName PSCredential -ArgumentList 'consumer_secret',$ConsumerSecret
 
     $requestSplat = @{
         Uri = 'https://openapi.etsy.com/v2/oauth/request_token'
-        ConsumerKey = $consumerKeyCred.GetNetworkCredential().password
-        ConsumerSecret = $consumerSecretCred.GetNetworkCredential().password
+        ConsumerKey = $ConsumerKey
+        ConsumerSecret = $ConsumerSecret
         Method = 'POST'
     }
     $confirmUrl = Invoke-OAuthMethod @requestSplat
@@ -33,8 +31,8 @@ function Request-EtsyOauthToken {
         $window.Quit()
         $tokensSplat = @{
             Uri = 'https://openapi.etsy.com/v2/oauth/access_token'
-            ConsumerKey = $consumerKeyCred.GetNetworkCredential().password
-            ConsumerSecret = $consumerSecretCred.GetNetworkCredential().password
+            ConsumerKey = $ConsumerKey
+            ConsumerSecret = $ConsumerSecret
             Token = $tempTokens.oauth_token
             TokenSecret = $tempTokens.oauth_token_secret
             Method = 'POST'
@@ -52,8 +50,8 @@ function Request-EtsyOauthToken {
         $tokens = $null
         [gc]::Collect()
         
-        $tokenObj | Add-Member -MemberType NoteProperty -Name consumer_key -Value $consumerKeyCred
-        $tokenObj | Add-Member -MemberType NoteProperty -Name consumer_secret -Value $consumerSecretCred
+        $tokenObj | Add-Member -MemberType NoteProperty -Name consumer_key -Value $ConsumerKey
+        $tokenObj | Add-Member -MemberType NoteProperty -Name consumer_secret -Value $ConsumerSecret
 
         if ($DoNotStore -eq $true) {
             #return
