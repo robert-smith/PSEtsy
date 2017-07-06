@@ -92,25 +92,30 @@ function Invoke-OAuthMethod {
 
     $signature = "$Method&"
     $signature += [Uri]::EscapeDataString($Uri) + "&"
-    if ($Parameters -and $Method -eq 'GET') {
+    # All GET method parameters must be appended to the URI
+    if ($Parameters -and $Method -match 'GET') {
         $params = ConvertTo-OAuthParameter -Parameters $Parameters
-        $signature += $params.Signature + [Uri]::EscapeDataString('&')
         $splat.Uri += '?' + $params.Query + '&'
     }
-    $signature += [Uri]::EscapeDataString('oauth_consumer_key=' + $ConsumerKey.GetNetworkCredential().Password + '&')
-    $signature += [Uri]::EscapeDataString('oauth_nonce=' + $Nonce + '&')
-    $signature += [Uri]::EscapeDataString('oauth_signature_method=HMAC-SHA1&')
-    $signature += [Uri]::EscapeDataString('oauth_timestamp=' + $Timestamp + '&')
-    $signature += [Uri]::EscapeDataString('oauth_token=' + $Token.GetNetworkCredential().Password + '&')
-    if ($Verifier) {
-        $signature += [Uri]::EscapeDataString('oauth_verifier=' + $Verifier + '&')
-    }$signature += [Uri]::EscapeDataString('oauth_version=1.0')
-
-    if ($Parameters -and $Method -eq 'PUT') {
+    # All POST and PUT method parameters must be added to the body
+    elseif ($Parameters -and $Method -match 'POST|PUT') {
         $params = ConvertTo-OAuthParameter -Parameters $Parameters
-        $signature += $params.Signature + [Uri]::EscapeDataString('&')
         $splat.Body = $params.Body
     }
+    else {
+        $Parameters = @{}
+    }
+    $Parameters.oauth_consumer_key = $ConsumerKey.GetNetworkCredential().Password
+    $Parameters.oauth_nonce = $Nonce
+    $Parameters.oauth_signature_method = 'HMAC-SHA1'
+    $Parameters.oauth_timestamp = $Timestamp
+    $Parameters.oauth_token = $Token.GetNetworkCredential().Password
+    if ($Verifier) {
+        $Parameters.oauth_verifier = $Verifier
+    }
+    $Parameters.oauth_version = '1.0'
+    $params = ConvertTo-OAuthParameter -Parameters $Parameters
+    $signature += $params.Signature
 
     $signature_key = [Uri]::EscapeDataString($ConsumerSecret.GetNetworkCredential().Password) + "&" + [Uri]::EscapeDataString($TokenSecret.GetNetworkCredential().Password)
 
