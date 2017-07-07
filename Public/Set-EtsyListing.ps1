@@ -258,33 +258,33 @@ function Set-EtsyListing {
     }
 
     switch ($PSBoundParameters.Keys) {
-        'title'	{$splat.Parameters.title = $Title}
-        'description' {$splat.Parameters.description = $Description}
-        'materials' {$splat.Parameters.materials = $Materials}
-        'renew' {$splat.Parameters.renew = $Renew}
-        'shipping_template_id' {$splat.Parameters.shipping_template_id = $ShippingTemplateID}
-        'shop_section_id' {$splat.Parameters.shop_section_id = $ShopSectionID}
-        'state' {$splat.Parameters.state = $State}
-        'is_customizable' {$splat.Parameters.is_customizable = $IsCustomizable}
-        'item_weight' {$splat.Parameters.item_weight = $ItemWeight}
-        'item_length' {$splat.Parameters.item_length = $ItemLength}
-        'item_width' {$splat.Parameters.item_width = $ItemWidth}
-        'item_height' {$splat.Parameters.item_height = $ItemHeight}
-        'item_weight_unit' {$splat.Parameters.item_weight_unit = $ItemWeightUnit}
-        'item_dimensions_unit' {$splat.Parameters.item_dimensions_unit = $ItemDimensionsUnit}
-        'non_taxable' {$splat.Parameters.non_taxable = $NonTaxable}
-        'category_id' {$splat.Parameters.category_id = $CategoryID}
-        'taxonomy_id' {$splat.Parameters.taxonomy_id = $TaxonomyID}
-        'tags' {$splat.Parameters.tags = $Tags}
-        'who_made' {$splat.Parameters.who_made = $WhoMade}
-        'is_supply' {$splat.Parameters.is_supply = $IsSupply}
-        'when_made' {$splat.Parameters.when_made = $WhenMade}
-        'recipient' {$splat.Parameters.recipient = $Recipient}
-        'occasion' {$splat.Parameters.occasion = $Occasion}
-        'style' {$splat.Parameters.style = $Style}
-        'processing_min' {$splat.Parameters.processing_min = $ProcessingMin}
-        'processing_max' {$splat.Parameters.processing_max = $ProcessingMax}
-        'featured_rank' {$splat.Parameters.featured_rank = $FeaturedRank}
+        'Title'	{$splat.Parameters.title = $Title}
+        'Description' {$splat.Parameters.description = $Description}
+        'Materials' {$splat.Parameters.materials = $Materials}
+        'Renew' {$splat.Parameters.renew = $Renew}
+        'ShippingTemplateID' {$splat.Parameters.shipping_template_id = $ShippingTemplateID}
+        'ShopSectionID' {$splat.Parameters.shop_section_id = $ShopSectionID}
+        'State' {$splat.Parameters.state = $State}
+        'IsCustomizable' {$splat.Parameters.is_customizable = $IsCustomizable}
+        'ItemWeight' {$splat.Parameters.item_weight = $ItemWeight}
+        'ItemLength' {$splat.Parameters.item_length = $ItemLength}
+        'ItemWidth' {$splat.Parameters.item_width = $ItemWidth}
+        'ItemHeight' {$splat.Parameters.item_height = $ItemHeight}
+        'ItemWeightUnit' {$splat.Parameters.item_weight_unit = $ItemWeightUnit}
+        'ItemDimensionsUnit' {$splat.Parameters.item_dimensions_unit = $ItemDimensionsUnit}
+        'NonTaxable' {$splat.Parameters.non_taxable = $NonTaxable}
+        'CategoryID' {$splat.Parameters.category_id = $CategoryID}
+        'TaxonomyID' {$splat.Parameters.taxonomy_id = $TaxonomyID}
+        'Tags' {$splat.Parameters.tags = $Tags}
+        'WhoMade' {$splat.Parameters.who_made = $WhoMade}
+        'IsSupply' {$splat.Parameters.is_supply = $IsSupply}
+        'When_made' {$splat.Parameters.when_made = $WhenMade}
+        'Recipient' {$splat.Parameters.recipient = $Recipient}
+        'Occasion' {$splat.Parameters.occasion = $Occasion}
+        'Style' {$splat.Parameters.style = $Style}
+        'ProcessingMin' {$splat.Parameters.processing_min = $ProcessingMin}
+        'ProcessingMax' {$splat.Parameters.processing_max = $ProcessingMax}
+        'FeaturedRank' {$splat.Parameters.featured_rank = $FeaturedRank}
     }
     if ($splat.Parameters.Count -eq 0) {
         Write-Error -Message "At least one listing attribute must be specified."
