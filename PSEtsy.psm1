@@ -1,7 +1,12 @@
 $Public  = @( Get-ChildItem -Path $PSScriptRoot\Public\*.ps1 -Exclude *.tests.ps1 -ErrorAction SilentlyContinue )
 $Private = @( Get-ChildItem -Path $PSScriptRoot\Private\*.ps1 -Exclude *.tests.ps1 -ErrorAction SilentlyContinue )
 $EtsyTokensPath = "$home\.etsy\api_tokens"
-$EtsyTokens = Import-Clixml -Path $EtsyTokensPath
+try {
+    $EtsyTokens = Import-Clixml -Path $EtsyTokensPath -ErrorAction Stop
+}
+catch {
+    Write-Warning "Failed to import $EtsyTokensPath. Run Request-EtsyOauthToken to securely store both consumer and OAuth tokens."
+}
 
 Foreach($import in @($Public + $Private))
 {
@@ -15,4 +20,4 @@ Foreach($import in @($Public + $Private))
     }
 }
 
-Export-ModuleMember -Function $Public.BaseName -Variable EtsyTokens, EtsyTokensPath
+Export-ModuleMember -Function $Public.BaseName
