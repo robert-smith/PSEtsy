@@ -110,14 +110,13 @@ function Invoke-OAuthMethod {
     if ($Parameters) {
         # Clone hashtable to prevent the original from being modified
         $Parameters = $Parameters.Clone()
+        $params = ConvertTo-OAuthParameter -Parameters $Parameters
         # All GET method parameters must be appended to the URI
         if ($Method -match 'GET') {
-            $params = ConvertTo-OAuthParameter -Parameters $Parameters
             $splat.Uri += '?' + $params.Query + '&'
         }
         # All POST and PUT method parameters must be added to the body
         elseif ($Method -match 'POST|PUT') {
-            $params = ConvertTo-OAuthParameter -Parameters $Parameters
             $splat.Body = $params.Body
         }
     }
