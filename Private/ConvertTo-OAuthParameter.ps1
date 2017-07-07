@@ -10,6 +10,11 @@ function ConvertTo-OAuthParameter {
     foreach ($key in $Keys.Name) {
         #I could only get additional parameters to work when the value was run through EscapeDataString twice
         $value = [Uri]::EscapeDataString($Parameters.$key)
+        $value = $value.Replace('!','%21')
+        $value = $value.Replace('*','%2A')
+        $value = $value.Replace('(','%28')
+        $value = $value.Replace(')','%29')
+        $value = $value.Replace("'",'%27')
         $signature.Add([Uri]::EscapeDataString($key + '=' + $value)) > $null
         $body.Add($key + '=' + $value) > $null
     }
