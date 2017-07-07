@@ -59,6 +59,8 @@ function Request-EtsyOauthToken {
         }
         else {
             Save-SecureToken -Token $tokenObj
+            Write-Warning 'Please reload the PSEtsy module in order for the tokens to be loaded into memory. You can also import the tokens by running:
+            $tokens = Import-CliXml -Path $home\.etsy\api_tokens'
         }
     }
 }
