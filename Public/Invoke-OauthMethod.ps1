@@ -98,8 +98,6 @@ function Invoke-OAuthMethod {
         [string]$Verifier
     )
 
-    # Clone hashtable to prevent the original from being modified
-    $Parameters = $Parameters.Clone()
     $Nonce = New-Nonce
     $Timestamp = New-OauthTimestamp
     $splat = @{
@@ -109,15 +107,19 @@ function Invoke-OAuthMethod {
 
     $signature = "$Method&"
     $signature += [Uri]::EscapeDataString($Uri) + "&"
-    # All GET method parameters must be appended to the URI
-    if ($Parameters -and $Method -match 'GET') {
-        $params = ConvertTo-OAuthParameter -Parameters $Parameters
-        $splat.Uri += '?' + $params.Query + '&'
-    }
-    # All POST and PUT method parameters must be added to the body
-    elseif ($Parameters -and $Method -match 'POST|PUT') {
-        $params = ConvertTo-OAuthParameter -Parameters $Parameters
-        $splat.Body = $params.Body
+    if ($Parameters) {
+        # Clone hashtable to prevent the original from being modified
+        $Parameters = $Parameters.Clone()
+        # All GET method parameters must be appended to the URI
+        if ($Method -match 'GET') {
+            $params = ConvertTo-OAuthParameter -Parameters $Parameters
+            $splat.Uri += '?' + $params.Query + '&'
+        }
+        # All POST and PUT method parameters must be added to the body
+        elseif ($Method -match 'POST|PUT') {
+            $params = ConvertTo-OAuthParameter -Parameters $Parameters
+            $splat.Body = $params.Body
+        }
     }
     else {
         $Parameters = @{}
