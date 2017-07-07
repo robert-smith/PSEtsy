@@ -59,9 +59,11 @@ How tall the item is.
 
 .PARAMETER ItemWeightUnit
 The units used to represent the weight of this item. Can be one of the following: oz, lb, g, kg.
+NOTE: Must be all lowercase!
 
 .PARAMETER ItemDimensionsUnit
 The units used to represent the dimensions of this item. Can be one of the following: in, ft, mm, cm, m.
+NOTE: Must be all lowercase!
 
 .PARAMETER NonTaxable
 If set to $true, any applicable shop tax rates will not be applied to this listing on checkout.
@@ -77,18 +79,22 @@ A list/array of tags for the item. A tag is valid if it does not match the patte
 
 .PARAMETER WhoMade
 Who made the item being listed. Can be one of the following: i_did, collective, someone_else.
+NOTE: Must be all lowercase!
 
 .PARAMETER IsSupply
 Set to $true if the listing is a supply.
 
 .PARAMETER WhenMade
 When was the item made. Can be one of the following: made_to_order, 2010_2017, 2000_2009, 1998_1999, before_1998, 1990_1997, 1980s, 1970s, 1960s, 1950s, 1940s, 1930s, 1920s, 1910s, 1900s, 1800s, 1700s, before_1700
+NOTE: Must be all lowercase!
 
 .PARAMETER Recipient
 Who is this listing for. Can be one of the following: men, women, unisex_adults, teen_boys, teen_girls, teens, boys, girls, children, baby_boys, baby_girls, babies, birds, cats, dogs, pets, not_specified.
+NOTE: Must be all lowercase!
 
 .PARAMETER Occasion
 The occasion for this listing. Can be one of the following: anniversary, baptism, bar_or_bat_mitzvah, birthday, canada_day, chinese_new_year, cinco_de_mayo, confirmation, christmas, day_of_the_dead, easter, eid, engagement, fathers_day, get_well, graduation, halloween, hanukkah, housewarming, kwanzaa, prom, july_4th, mothers_day, new_baby, new_years, quinceanera, retirement, st_patricks_day, sweet_16, sympathy, thanksgiving, valentines, wedding.
+NOTE: Must be all lowercase!
 
 .PARAMETER Style
 Style of this listing. Each style is a free-form text string such as "Formal", or "Steampunk". A Listing may have up to two styles. A style is valid if it does not match the pattern: /[^\p{L}\p{Nd}\p{Zs}]/u.
@@ -131,7 +137,8 @@ function Set-EtsyListing {
         [ValidateSet(
             'active',
             'inactive',
-            'draft'
+            'draft',
+            IgnoreCase = $false
         )]
         [string]$State,
         [bool]$IsCustomizable,
@@ -143,7 +150,8 @@ function Set-EtsyListing {
             'oz',
             'lb',
             'g',
-            'kg'
+            'kg',
+            IgnoreCase = $false
         )]
         [string]$ItemWeightUnit,
         [ValidateSet(
@@ -151,7 +159,8 @@ function Set-EtsyListing {
             'ft',
             'mm',
             'cm',
-            'm'
+            'm',
+            IgnoreCase = $false
         )]
         [string]$ItemDimensionsUnit,
         [bool]$NonTaxable,
@@ -161,7 +170,8 @@ function Set-EtsyListing {
         [ValidateSet(
             'i_did',
             'collective',
-            'someone_else'
+            'someone_else',
+            IgnoreCase = $false
         )]
         [string]$WhoMade,
         [bool]$IsSupply,
@@ -183,7 +193,8 @@ function Set-EtsyListing {
             '1900s',
             '1800s',
             '1700s',
-            'before_1700'
+            'before_1700',
+            IgnoreCase = $false
         )]
         [string]$WhenMade,
         [ValidateSet(
@@ -203,7 +214,8 @@ function Set-EtsyListing {
             'cats',
             'dogs',
             'pets',
-            'not_specified'
+            'not_specified',
+            IgnoreCase = $false
         )]
         [string]$Recipient,
         [ValidateSet(
@@ -239,7 +251,8 @@ function Set-EtsyListing {
             'sympathy',
             'thanksgiving',
             'valentines',
-            'wedding'
+            'wedding',
+            IgnoreCase = $false
         )]
         [string]$Occasion,
         [array]$Style,
