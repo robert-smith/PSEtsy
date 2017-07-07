@@ -287,7 +287,7 @@ function Set-EtsyListing {
         'featured_rank' {$splat.Parameters.featured_rank = $FeaturedRank}
     }
     if ($splat.Parameters.Count -eq 0) {
-        Write-Error -Message 'Missing parameters.'
+        Write-Error -Message "At least one listing attribute must be specified."
         return
     }
 
