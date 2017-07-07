@@ -8,8 +8,9 @@ function ConvertTo-OAuthParameter {
     #Parameters must be sorted
     $Keys = $Parameters.GetEnumerator() | Sort-Object -Property Name
     foreach ($key in $Keys.Name) {
-        #I could only get additional parameters to work when the value was run through EscapeDataString twice
+        # I could only get additional parameters to work when the value was run through EscapeDataString twice
         $value = [Uri]::EscapeDataString($Parameters.$key)
+        # Escape characters not covered by EscapeDataString
         $value = $value.Replace('!','%21')
         $value = $value.Replace('*','%2A')
         $value = $value.Replace('(','%28')
