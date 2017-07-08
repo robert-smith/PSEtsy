@@ -36,20 +36,30 @@ function Get-EtsyActiveListing {
         [PSCredential]$ConsumerKey = $EtsyTokens.consumer_key,
         [PSCredential]$ConsumerSecret = $EtsyTokens.consumer_secret,
         [PSCredential]$Token = $EtsyTokens.oauth_token,
-        [PSCredential]$TokenSecret = $EtsyTokens.oauth_token_secret
+        [PSCredential]$TokenSecret = $EtsyTokens.oauth_token_secret,
+        [ValidateSet(
+            'active',
+            'inactive',
+            'draft',
+            'expired',
+            'featured',
+            IgnoreCase = $false
+        )]
+        $ListingType = 'active'
     )
     $splat = @{
         ConsumerKey = $ConsumerKey
         ConsumerSecret = $ConsumerSecret
         Token = $Token
         TokenSecret = $TokenSecret
-        Uri = 'https://openapi.etsy.com/v2/shops/__SELF__/listings/active'
+        Uri = "https://openapi.etsy.com/v2/shops/__SELF__/listings/$ListingType"
         Method = 'GET'
         Parameters = @{
             limit = 100
             page = 1
         }
     }
+
     do {
         $results = Invoke-OAuthMethod @splat
         $allListings += $results.results
