@@ -123,10 +123,6 @@ This example assumes that the tokens have been stored using Request-EtsyOauthTok
 #>
 function Set-EtsyListing {
     param (
-        [PSCredential]$ConsumerKey = $EtsyTokens.consumer_key,
-        [PSCredential]$ConsumerSecret = $EtsyTokens.consumer_secret,
-        [PSCredential]$Token = $EtsyTokens.oauth_token,
-        [PSCredential]$TokenSecret = $EtsyTokens.oauth_token_secret,
         [int]$ListingID,
         [string]$Title,
         [string]$Description,
@@ -258,7 +254,11 @@ function Set-EtsyListing {
         [array]$Style,
         [int]$ProcessingMin,
         [int]$ProcessingMax,
-        [int]$FeaturedRank
+        [int]$FeaturedRank,
+        [PSCredential]$ConsumerKey = $EtsyTokens.consumer_key,
+        [PSCredential]$ConsumerSecret = $EtsyTokens.consumer_secret,
+        [PSCredential]$Token = $EtsyTokens.oauth_token,
+        [PSCredential]$TokenSecret = $EtsyTokens.oauth_token_secret
     )
     $splat = @{
         ConsumerKey = $ConsumerKey

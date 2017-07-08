@@ -31,12 +31,8 @@ PS C:\> Get-EtsyActiveListing @splat
 .OUTPUTS
 PSCustomObject
 #>
-function Get-EtsyActiveListing {
+function Get-EtsyListing {
     param (
-        [PSCredential]$ConsumerKey = $EtsyTokens.consumer_key,
-        [PSCredential]$ConsumerSecret = $EtsyTokens.consumer_secret,
-        [PSCredential]$Token = $EtsyTokens.oauth_token,
-        [PSCredential]$TokenSecret = $EtsyTokens.oauth_token_secret,
         [ValidateSet(
             'active',
             'inactive',
@@ -45,7 +41,11 @@ function Get-EtsyActiveListing {
             'featured',
             IgnoreCase = $false
         )]
-        $ListingType = 'active'
+        $ListingType = 'active',
+        [PSCredential]$ConsumerKey = $EtsyTokens.consumer_key,
+        [PSCredential]$ConsumerSecret = $EtsyTokens.consumer_secret,
+        [PSCredential]$Token = $EtsyTokens.oauth_token,
+        [PSCredential]$TokenSecret = $EtsyTokens.oauth_token_secret
     )
     $splat = @{
         ConsumerKey = $ConsumerKey
