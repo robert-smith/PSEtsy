@@ -51,9 +51,8 @@ function Start-EtsyTitleReplace {
             }
             $newTitle = $listing.title.Replace($TextToReplace,$ReplaceWith)
             if ($newTitle -ne $listing.title) {
-                #$change = Set-EtsyListing -ListingID $listing.listing_id -Title $newTitle
-                #$return.NewTitle = $change.results.title
-                $return.NewTitle = $newTitle
+                $change = Set-EtsyListing -ListingID $listing.listing_id -Title $newTitle
+                $return.NewTitle = $change.results.title
             }
             else {
                 $return.NewTitle = "Skipped - `"$TextToReplace`" not found in title"
